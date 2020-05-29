@@ -8,63 +8,77 @@
 #
 
 library(shiny)
-
+library(ggplot2)
 # Define server logic
-shinyServer(function(input, output) {
-    # cut mtcars$mpg to 0 if less than 20
-    mtcars$mpgsp <- ifelse(mtcars$mpg - 20 > 0, mtcars$mpg - 20, 0)
-    # fitting models
-    # model 1: simple lin regression of hp on mpg
-    model1 <- lm(hp ~ mpg, data = mtcars)
-    # model 2: lin regression with additional regression: mpg with interaction for higher than 20 mpg
-    model2 <- lm(hp ~ mpgsp + mpg, data = mtcars)
+function(input, output) {
 
-    model1_pred <- reactive({
-        mpgInput <- input$sliderMPG
-        predict(model1, newdata = data.frame(mpg = mpgInput))
+    #### simulate data ####
+    simulate <- reactive({
+        input$update
+        isolate({
+            set.seed(1234)
+            x <- runif(input$n, 0, 100)
+            u <- rnorm(input$n, 0, input$error_var)
+            y <- input$intercept + input$slope * x + u
+            # flush source_coords
+            source_coords$x <- NULL
+            source_coords$y <- NULL
+        })
+        return(data.frame(x = x, y = y, Source = 'Original'))
     })
 
-    model2_pred <- reactive({
-        mpgInput <- input$sliderMPG
-        predict(model2, newdata = data.frame(mpg = mpgInput,
-                                             mpgsp = ifelse(mpgInput > 20,
-                                                            mpgInput -20,
-                                                            0)))
+    ### data ###
+    source_coords <- reactiveValues(x = NULL, y = NULL)
+
+    ### saving clicks ###
+    observe({
+        input$click
+        isolate({
+            source_coords$x <- c(source_coords$x, input$click$x)
+            source_coords$y <- c(source_coords$y, input$click$y)
+        })
     })
 
-    output$plot1 <- renderPlot({
-        mpgInput <- input$sliderMPG
-        # bty = n suppresses the box
-        plot(mtcars$mpg, mtcars$hp, xlab = "Miles Per Gallon",
-            ylab = "Horsepower", bty = "n", pch = 16,
-            xlim = c(10, 35), ylim = c(50, 350))
-        if (input$showModel1) {
-            abline(model1, col = "red", lwd = 2)
+    ### update dataframe with new clicks
+    update_df <- reactive({
+        df <- simulate()
+        if (!is.null(source_coords$x)) {
+            # transform source coords to df
+            source_df <- data.frame(x = source_coords$x,
+                                    y = source_coords$y,
+                                    Source = 'Click')
+            # binding with initial df
+            df <- rbind(df, source_df)
         }
-        if (input$showModel2) {
-            model2lines <- predict(model2,
-                                   newdata = data.frame(mpg = 10:35,
-                                                        mpgsp = ifelse(10:35 > 20,
-                                                                       10:35 - 20,
-                                                                       0)))
-            lines(10:35, model2lines, col = "blue", lwd = 2)
-        }
-        # add a legend
-        legend(25, 250, c("Model 1 Prediction", "Model 2 Prediction"),
-               pch = 16, col = c("red", "blue"), bty = "n", cex = 1.2)
-        # adding points with predictions
-        # notice how we call reactive expressions!!
-        # necessary to call them from within a Render*() function
-        points(mpgInput, model1_pred(), col = "red", pch = 16, cex = 2)
-        points(mpgInput, model2_pred(), col = "blue", pch = 16, cex = 2)
+        return(df)
     })
 
-    output$pred1 <- renderText({
-        model1_pred()
+    ### set up Plot
+    setup_plot <- function(df) {
+        ggplot(df, aes(x = x, y = y)) +
+            geom_point(aes(color = Source)) +
+            coord_cartesian(xlim = c(-25, 125),
+                            ylim = c(min(df$y)- 25, max(df$y) + 25)) +
+            geom_smooth(method = "lm")
+    }
+    ### render Plot
+    output$plot <- renderPlot({
+        df <- update_df()
+        setup_plot(df)
     })
 
-    output$pred2 <- renderText({
-        model2_pred()
+    ### Get Data from regression
+    output$result <- renderText({
+        df <- update_df()
+        model <- lm(df$y~df$x)
+        intercept <- summary(model)$coefficients[, 1][1]
+        slope <- summary(model)$coefficients[, 1][2]
+        paste0("Intercept: ", intercept, "; Slope: ", slope)
     })
 
-})
+    output$pval <- renderText({
+        df <- update_df()
+        model <- lm(df$y~df$x)
+        summary(model)$coefficients[, 4][2]
+    })
+}
