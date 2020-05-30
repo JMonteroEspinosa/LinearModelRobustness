@@ -41,7 +41,7 @@ where $\alpha$ and $\beta$ are constants (called intercept and slope, respective
 - To run the App within R or RStudio, you can simply run (with shiny installed):
 ```{r, eval = F, echo = T}
 library(shiny)
-runGitHub("LinearModelRobustness", "JMonteroEspinosa")
+runGitHub("LinearModelRobustness", "JMonteroEspinosa", subdir = "app")
 ```
 
 - Let's see a screenshot to clarify p-values
