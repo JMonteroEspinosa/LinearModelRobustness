@@ -1,0 +1,64 @@
+---
+title: "Exploring the Robustness of Linear Regression"
+author: "Juan Antonio Montero de Espinosa Reina"
+date: "5/30/2020"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Linear Regression and p-values
+
+- Statistical models are useful to understand relationships between variables. 
+
+- Due to its simplicity, one of the most popular such models is Linear Regression
+  - For example, we may want to see how much GDP per capita (x) affects Life Expectancy (y) on average
+  - Implicitly, Linear Regression assumes the model $y = \alpha + \beta x + u$ (where $u$ is the error term)
+
+- Researchers use p-values on the estimated $\beta$ to try to answer the following question: does variable x have an effect on variable y on average?
+
+- The lower the p-value , the more likely we are to accept that variable x has a linear effect on y. Common thresholds that indicate that there is a linear relationship are 0.05, and 0.01
+  
+- This App lets you explore the robustness of the p-value statistic to changes in many parameters of the relationship between any two variables.
+
+
+## The Underlying Model
+
+- Internally, the App simulates the following model:
+$$y  = \alpha + \beta f(x) + u$$
+where $\alpha$ and $\beta$ are constants (called intercept and slope, respectively). $u$ is assumed to be normal with zero mean. Finally, $f$ is any univariate function (by default, $f(x) = x$)
+
+- You can play around with the specifications of the simple model above! You can change $f$, the number of observations in the sample, and many more things, and instantly check the p-value of the slope!
+
+- What is cooler, you can even add points to the relationship by clicking on the plot!
+
+## Running the App
+
+- The entire project sits on my Github account "JMonteroEspinosa", repo "LinearModelRobustness". Commits are welcome! :)
+
+- To run the App within R or RStudio, you can simply run (with shiny installed):
+```{r, eval = F, echo = T}
+library(shiny)
+runGitHub("LinearModelRobustness", "JMonteroEspinosa")
+```
+
+- Let's see a screenshot to clarify p-values
+
+## Example of No Linear Relationship
+
+- From the default options, I simply change the slope to be 0. This implies that x and y will be unrelated!
+
+```{r, include=F}
+presentation_path <- "/home/jmontero/Documents/coursera/RdataProducts/Week4/assignment/LinearModelRobustness"
+```
+```{r fig.align='center'}
+knitr::include_graphics(file.path(presentation_path, "presentation/screenshot_app.png"))
+```
+
+- We see that the p-value is 0.40, which in practice means we would discard any relationship. Good!
+
+- But what if you add a point in some of the corners? Be careful about outliers in your analysis! 
+
+- And what if you write sin(x) as the function with slope 1? does the model find any relationship?
