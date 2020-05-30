@@ -29,9 +29,9 @@ fluidPage(
         mainPanel(
             plotOutput("plot", click="click"),
             h4("Linear Model:"),
-            textOutput("result"),
-            h4("Slope p-value:"),
-            textOutput("pval")
+            h4(textOutput("result")),
+            h3("Slope p-value:"),
+            h3(textOutput("pval"))
         )
     )
 )
