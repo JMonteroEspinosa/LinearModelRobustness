@@ -14,7 +14,10 @@ fluidPage(
     # Sidebar with a slider input for number of bins
     sidebarLayout(
         sidebarPanel(
+            textInput("function_form", "R Function (argument x)", "x"),
             numericInput("n", "Number of Observations", 20),
+            numericInput("min_x", "Minimum x", 0),
+            numericInput("max_x", "Maximum x", 100),
             numericInput("intercept", "Intercept", 0),
             numericInput("slope", "Slope", 1),
             numericInput("error_var", "Variance", 5),

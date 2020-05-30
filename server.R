@@ -16,10 +16,14 @@ function(input, output) {
     simulate <- reactive({
         input$update
         isolate({
+            set.seed(seed = NULL)  # reinitialise seed
             set.seed(1234)
-            x <- runif(input$n, 0, 100)
+            # parsing function
+            function_text <- paste0("function (x) {", input$function_form, "}")
+            function_form <- eval(parse(text=function_text))
+            x <- runif(input$n, input$min_x, input$max_x)
             u <- rnorm(input$n, 0, input$error_var)
-            y <- input$intercept + input$slope * x + u
+            y <- input$intercept + input$slope * function_form(x) + u
             # flush source_coords
             source_coords$x <- NULL
             source_coords$y <- NULL
@@ -57,8 +61,8 @@ function(input, output) {
     setup_plot <- function(df) {
         ggplot(df, aes(x = x, y = y)) +
             geom_point(aes(color = Source)) +
-            coord_cartesian(xlim = c(-25, 125),
-                            ylim = c(min(df$y)- 25, max(df$y) + 25)) +
+            coord_cartesian(xlim = c(min(df$x) - 0.2 * max(df$x), 1.2 * max(df$x)),
+                            ylim = c(min(df$y) - 0.2 * max(df$y), 1.2 * max(df$y))) +
             geom_smooth(method = "lm")
     }
     ### render Plot
