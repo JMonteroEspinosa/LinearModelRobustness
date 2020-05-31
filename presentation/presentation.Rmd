@@ -1,8 +1,11 @@
 ---
 title: "Exploring the Robustness of Linear Regression"
 author: "Juan Antonio Montero de Espinosa Reina"
-date: "5/30/2020"
-output: slidy_presentation
+date: "5/31/2020"
+output: 
+  slidy_presentation:
+    theme: cerulean
+    highlight: haddock
 ---
 
 ```{r setup, include=FALSE}
@@ -44,6 +47,7 @@ library(shiny)
 runGitHub("LinearModelRobustness", "JMonteroEspinosa", subdir = "app")
 ```
 
+- Currently, the model is also hosted at https://jmontero.shinyapps.io/LinearModelRobustness/
 - Let's see a screenshot to clarify p-values
 
 ## Example of No Linear Relationship
@@ -59,6 +63,8 @@ knitr::include_graphics(file.path(presentation_path, "presentation/screenshot_ap
 
 - We see that the p-value is 0.40, which in practice means we would discard any relationship. Good!
 
-- But what if you add a point in some of the corners? Be careful about outliers in your analysis! 
+- But what if you add a point in some of the corners? (Be careful about outliers in your analysis!)
 
-- And what if you write sin(x) as the function with slope 1? does the model find any relationship?
+- And what if you write $sin(x)$ as the function with slope different from zero? does the model find any relationship?
+
+- These are just some of the questions that you can answer with this small app!
