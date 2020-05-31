@@ -22,9 +22,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - Researchers use p-values on the estimated $\beta$ to try to answer the following question: does variable x have an effect on variable y on average?
 
-- The lower the p-value , the more likely we are to accept that variable x has a linear effect on y. Common thresholds that indicate that there is a linear relationship are 0.05, and 0.01
+- The lower the p-value , the more likely we are to accept that variable x has a linear effect on y. Commonly used thresholds to accept a linear relationship between variables are 0.1 (arguably), 0.05 and 0.01
   
-- This App lets you explore the robustness of the p-value statistic to changes in many parameters of the relationship between any two variables.
+- This App lets you explore the robustness of the p-value statistic to changes in many parameters of the relationship between two variables.
 
 
 ## The Underlying Model
@@ -33,9 +33,9 @@ knitr::opts_chunk$set(echo = FALSE)
 $$y  = \alpha + \beta f(x) + u$$
 where $\alpha$ and $\beta$ are constants (called intercept and slope, respectively). $u$ is assumed to be normal with zero mean. Finally, $f$ is any univariate function (by default, $f(x) = x$)
 
-- You can play around with the specifications of the simple model above! You can change $f$, the number of observations in the sample, and many more things, and instantly check the p-value of the slope!
+- In the App, you can play around with the specifications of the simple model above! You can change $f$, the number of observations in the sample, and many more things, and instantly check the p-value of the slope!
 
-- What is cooler, you can even add points to the relationship by clicking on the plot!
+- What is even cooler, you can add points to the relationship by clicking on the plot!
 
 ## Running the App
 
@@ -48,6 +48,9 @@ runGitHub("LinearModelRobustness", "JMonteroEspinosa", subdir = "app")
 ```
 
 - Currently, the model is also hosted at https://jmontero.shinyapps.io/LinearModelRobustness/
+
+- In the current implementation, the graph takes a bit more time to load, so be patient
+
 - Let's see a screenshot to clarify p-values
 
 ## Example of No Linear Relationship
@@ -65,6 +68,6 @@ knitr::include_graphics(file.path(presentation_path, "presentation/screenshot_ap
 
 - But what if you add a point in some of the corners? (Be careful about outliers in your analysis!)
 
-- And what if you write $sin(x)$ as the function with slope different from zero? does the model find any relationship?
+- And what if you write $sin(x)$ as the function (with slope different from zero)? does the model find any relationship?
 
-- These are just some of the questions that you can answer with this small app!
+- These are just some of the questions that you can answer with this small but cool app!

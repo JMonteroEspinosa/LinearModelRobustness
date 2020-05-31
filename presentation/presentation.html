@@ -480,16 +480,16 @@ Juan Antonio Montero de Espinosa Reina
 <li>Implicitly, Linear Regression assumes the model <span class="math inline">\(y = \alpha + \beta x + u\)</span> (where <span class="math inline">\(u\)</span> is the error term)</li>
 </ul></li>
 <li><p>Researchers use p-values on the estimated <span class="math inline">\(\beta\)</span> to try to answer the following question: does variable x have an effect on variable y on average?</p></li>
-<li><p>The lower the p-value , the more likely we are to accept that variable x has a linear effect on y. Common thresholds that indicate that there is a linear relationship are 0.05, and 0.01</p></li>
-<li><p>This App lets you explore the robustness of the p-value statistic to changes in many parameters of the relationship between any two variables.</p></li>
+<li><p>The lower the p-value , the more likely we are to accept that variable x has a linear effect on y. Commonly used thresholds to accept a linear relationship between variables are 0.1 (arguably), 0.05 and 0.01</p></li>
+<li><p>This App lets you explore the robustness of the p-value statistic to changes in many parameters of the relationship between two variables.</p></li>
 </ul>
 </div>
 <div id="the-underlying-model" class="slide section level2">
 <h1>The Underlying Model</h1>
 <ul>
 <li><p>Internally, the App simulates the following model: <span class="math display">\[y  = \alpha + \beta f(x) + u\]</span> where <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are constants (called intercept and slope, respectively). <span class="math inline">\(u\)</span> is assumed to be normal with zero mean. Finally, <span class="math inline">\(f\)</span> is any univariate function (by default, <span class="math inline">\(f(x) = x\)</span>)</p></li>
-<li><p>You can play around with the specifications of the simple model above! You can change <span class="math inline">\(f\)</span>, the number of observations in the sample, and many more things, and instantly check the p-value of the slope!</p></li>
-<li><p>What is cooler, you can even add points to the relationship by clicking on the plot!</p></li>
+<li><p>In the App, you can play around with the specifications of the simple model above! You can change <span class="math inline">\(f\)</span>, the number of observations in the sample, and many more things, and instantly check the p-value of the slope!</p></li>
+<li><p>What is even cooler, you can add points to the relationship by clicking on the plot!</p></li>
 </ul>
 </div>
 <div id="running-the-app" class="slide section level2">
@@ -501,8 +501,9 @@ Juan Antonio Montero de Espinosa Reina
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(shiny)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">runGitHub</span>(<span class="st">&quot;LinearModelRobustness&quot;</span>, <span class="st">&quot;JMonteroEspinosa&quot;</span>, <span class="dt">subdir =</span> <span class="st">&quot;app&quot;</span>)</a></code></pre></div>
 <ul>
-<li>Currently, the model is also hosted at <a href="https://jmontero.shinyapps.io/LinearModelRobustness/" class="uri">https://jmontero.shinyapps.io/LinearModelRobustness/</a></li>
-<li>Let’s see a screenshot to clarify p-values</li>
+<li><p>Currently, the model is also hosted at <a href="https://jmontero.shinyapps.io/LinearModelRobustness/" class="uri">https://jmontero.shinyapps.io/LinearModelRobustness/</a></p></li>
+<li><p>In the current implementation, the graph takes a bit more time to load, so be patient</p></li>
+<li><p>Let’s see a screenshot to clarify p-values</p></li>
 </ul>
 </div>
 <div id="example-of-no-linear-relationship" class="slide section level2">
@@ -514,7 +515,8 @@ Juan Antonio Montero de Espinosa Reina
 <ul>
 <li><p>We see that the p-value is 0.40, which in practice means we would discard any relationship. Good!</p></li>
 <li><p>But what if you add a point in some of the corners? (Be careful about outliers in your analysis!)</p></li>
-<li><p>And what if you write sin(x) as the function with slope 1? does the model find any relationship?</p></li>
+<li><p>And what if you write <span class="math inline">\(sin(x)\)</span> as the function (with slope different from zero)? does the model find any relationship?</p></li>
+<li><p>These are just some of the questions that you can answer with this small but cool app!</p></li>
 </ul>
 </div>
 
